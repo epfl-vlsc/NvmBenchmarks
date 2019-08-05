@@ -103,5 +103,157 @@
 
     clang++ -emit-llvm --std=c++11 -I./include -O0 -fomit-frame-pointer -funit-at-a-time -fno-strict-aliasing -fno-threadsafe-statics -fnon-call-exceptions -fPIC -Wall -Wpointer-arith -Wno-parentheses -Wno-conversion -Wno-sign-compare -DPM -DPMFLUSH=clflushopt -MP -MMD -DCOMMIT_ID="\"\"" -o src/FixedAllocator.bc -c src/FixedAllocator.cc
 
+# real bugs
+
+## pmfs
+
+### journal.c
+
+* Description: In function given below double flush log entry
+
+* Solution: pair checker
+
+```cpp
+static inline void pmfs_commit_logentry(struct super_block *sb,
+		pmfs_transaction_t *trans, pmfs_logentry_t *le)
+{
+	struct pmfs_sb_info *sbi = PMFS_SB(sb);
+	if (sbi->redo_log) {
+		/* Redo Log */
+		PERSISTENT_MARK();
+		PERSISTENT_BARRIER();
+		/* Atomically write the commit type */
+		PM_OR_EQU(le->type, LE_COMMIT);
+		barrier();
+		/* Atomically make the log entry valid */
+		PM_EQU(le->gen_id, cpu_to_le16(trans->gen_id));
+********pmfs_flush_buffer(le, LOGENTRY_SIZE, false);
+		PERSISTENT_MARK();
+		PERSISTENT_BARRIER();
+		/* Update the FS in place */
+********pmfs_flush_transaction(sb, trans);
+	} else {
+		/* Undo Log */
+		/* Update the FS in place: currently already done. so
+		 * only need to clflush */
+		pmfs_flush_transaction(sb, trans);
+		PERSISTENT_MARK();
+		PERSISTENT_BARRIER();
+		/* Atomically write the commit type */
+		PM_OR_EQU(le->type, LE_COMMIT);
+		barrier();
+		/* Atomically make the log entry valid */
+		PM_EQU(le->gen_id, cpu_to_le16(trans->gen_id));
+		pmfs_flush_buffer(le, LOGENTRY_SIZE, true);
+	}
+}
+
+typedef struct pmfs_transaction {
+	u32              transaction_id;
+	u16              num_entries;
+	u16              num_used;
+	u16              gen_id;
+	u16              status;
+	pmfs_journal_t  *t_journal;
+	pmfs_logentry_t *start_addr;
+	struct pmfs_transaction *parent;
+} pmfs_transaction_t;
+```
+
+## pmdk
+
+### btree_map.c 1
+
+* Description: In function given below double flush log entry
+
+* Solution: log checker
+
+```cpp
+btree_map_insert
+btree_map_find_dest_node
+
+static TOID(struct tree_map_node)
+btree_map_create_split_node(TOID(struct tree_map_node) node,
+	struct tree_map_node_item *m)
+{
+	TOID(struct tree_map_node) right = TX_ZNEW(struct tree_map_node);
+
+	int c = (BTREE_ORDER / 2);
+	*m = D_RO(node)->items[c - 1]; /* select median item */
+*****set_empty_item(&D_RW(node)->items[c - 1]);
+
+	/* move everything right side of median to the new node */
+	for (int i = c; i < BTREE_ORDER; ++i) {
+		if (i != BTREE_ORDER - 1) {
+			D_RW(right)->items[D_RW(right)->n++] =
+				D_RO(node)->items[i];
+			set_empty_item(&D_RW(node)->items[i]);
+		}
+		D_RW(right)->slots[i - c] = D_RO(node)->slots[i];
+		D_RW(node)->slots[i] = TOID_NULL(struct tree_map_node);
+	}
+	D_RW(node)->n = c - 1;
+
+	return right;
+}
+```
+
+### btree_map.c 2
+
+* Description: Double logging
+
+* Solution: log checker
+
+```cpp
+btree_map_remove
+btree_map_remove_item
+btree_map_remove_from_node
+
+btree_map_rebalance
+btree_map_rotate_left
+btree_map_insert_item
+btree_map_insert_item_at
+
+btree_map_find_dest_node
+
+static void
+btree_map_rotate_left(TOID(struct tree_map_node) lsb,
+	TOID(struct tree_map_node) node,
+	TOID(struct tree_map_node) parent, int p)
+{
+	/* move the separator from parent to the deficient node */
+	struct tree_map_node_item sep = D_RO(parent)->items[p - 1];
+	btree_map_insert_item(node, 0, sep);
+
+	/* the last element of the left sibling is the new separator */
+	TX_ADD_FIELD(parent, items[p - 1]);
+	D_RW(parent)->items[p - 1] = D_RO(lsb)->items[D_RO(lsb)->n - 1];
+
+****TX_ADD(node);
+	/* rotate the node children */
+	memmove(D_RW(node)->slots + 1, D_RO(node)->slots,
+		sizeof(TOID(struct tree_map_node)) * (D_RO(node)->n));
+
+	/* the nodes are not necessarily leafs, so copy also the slot */
+	D_RW(node)->slots[0] = D_RO(lsb)->slots[D_RO(lsb)->n];
+
+	TX_ADD_FIELD(lsb, n);
+	D_RW(lsb)->n -= 1; /* it loses one element, but still > min */
+}
+
+static void
+btree_map_insert_item(TOID(struct tree_map_node) node, int p,
+	struct tree_map_node_item item)
+{
+****TX_ADD(node);
+	if (D_RO(node)->items[p].key != 0) {
+		memmove(&D_RW(node)->items[p + 1], &D_RW(node)->items[p],
+		sizeof(struct tree_map_node_item) * ((BTREE_ORDER - 2 - p)));
+	}
+	btree_map_insert_item_at(node, p, item);
+}
+
+
+```
 
 
