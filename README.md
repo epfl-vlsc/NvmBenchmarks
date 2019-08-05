@@ -18,4 +18,22 @@
 
     make > make.txt
 
+    make clean
+
+# nstore
+
+* first time
+    * ´./bootstrap´
+    * ´./configure´
+
+* replace with ´CXXFLAGS='-ggdb -O3 -D_ENABLE_FTRACE -fsized-deallocation'´ in configure.ac
+
+    cd src
+
+    make > make.txt
+
+    make clean
+
+# redis
+
 
