@@ -9,3 +9,13 @@
     make V=1 > make.txt
 
     make clean
+
+# echo
+
+    cd src
+
+* first time ´make tcmalloc´
+
+    make > make.txt
+
+
