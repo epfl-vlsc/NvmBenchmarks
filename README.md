@@ -4,3 +4,8 @@
 
     ./clean.sh
 
+# pmfs
+
+    make V=1 > make.txt
+
+    make clean
