@@ -1,4 +1,4 @@
-# nvml
+# pmdk
 
     ./build.sh > make.txt
 
@@ -34,6 +34,10 @@
 
     make clean
 
-# redis
+# pmgd
+
+    make PMOPT=PM -n > make.txt
+
+    make clean
 
 
