@@ -194,6 +194,28 @@
 
     clang++ -emit-llvm --std=c++11 -I./include -O0 -fomit-frame-pointer -funit-at-a-time -fno-strict-aliasing -fno-threadsafe-statics -fnon-call-exceptions -fPIC -Wall -Wpointer-arith -Wno-parentheses -Wno-conversion -Wno-sign-compare -DPM -DPMFLUSH=clflushopt -MP -MMD -DCOMMIT_ID="\"\"" -o src/FixedAllocator.bc -c src/FixedAllocator.cc
 
+## description
+
+* ACID graph database
+
+### flush
+
+	TransactionManager::flush/_range: clflush
+	TransactionManager::commit: sfence
+
+* /home/aksun/git/NvmBenchmarks/pmgd/src/transaction.cc
+* /home/aksun/git/NvmBenchmarks/pmgd/src/PropertyList.cc
+* /home/aksun/git/NvmBenchmarks/pmgd/src/List.h
+
+#### patterns
+##### pair
+* _jcur
+
+##### dur
+* new_node
+
+---
+
 # real bugs
 
 ## pmfs
