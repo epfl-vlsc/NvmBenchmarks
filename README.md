@@ -30,11 +30,6 @@
 
 ### flush
 
-	pmem_persist
-	pmem_flush_cache
-	pmemalloc_activate_helper
-	__pmem_persist
-
 	kp_flush_range: mfence + clflush + mfence
 
 * /home/aksun/git/NvmBenchmarks/echo/src/hash_table/hash.c
@@ -81,6 +76,33 @@
 
     cd test
     clang++ -emit-llvm -DHAVE_CONFIG_H -I. -I.. -I./../src/common -Wno-pointer-arith -Wall -Wextra -ggdb -O0 -D_ENABLE_FTRACE -fsized-deallocation -std=c++11 -MT test_plist.bc -MD -MP -c -o test_plist.bc test_plist.cpp
+
+## description
+
+* three types of relational database implementation for PM with their opt versions
+	* in-place update: 
+	* copy-on-write: 
+	* log-structured update: 
+
+### flush
+
+	pmemalloc_activate
+
+	kp_flush_range: mfence + clflush + mfence
+
+* /home/aksun/git/NvmBenchmarks/nstore/src/opt_wal_engine.cpp
+
+#### patterns
+
+##### pair
+* plist->head-tail, size
+
+##### dur
+* pm_log:plist<char*>*, entry 
+* pm_data:plist<char*>*, after_rec
+* pm_map, after_rec
+
+* bug ?/home/aksun/git/NvmBenchmarks/nstore/src/common/pbtree.h:2030
 
 # nvml
 
