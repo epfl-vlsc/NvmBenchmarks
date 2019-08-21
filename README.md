@@ -126,6 +126,30 @@
     cd tree_map
     clang -emit-llvm -c -o btree_map.bc -std=gnu99 -ggdb -Wall -Werror  -fPIC -I../../../include -I. btree_map.c
 
+## description
+
+* data structures implemented using libpmemobj
+
+### flush
+
+	TX_BEGIN
+	TX_ADD_FIELD
+	TX_ADD
+	TX_ZNEW
+	TX_END
+
+* /home/aksun/git/NvmBenchmarks/nvml/src/examples/libpmemobj/tree_map/btree_map.c
+* /home/aksun/git/NvmBenchmarks/nvml/src/examples/libpmemobj/tree_map/ctree_map.c
+* /home/aksun/git/NvmBenchmarks/nvml/src/examples/libpmemobj/tree_map/rbtree_map.c
+* /home/aksun/git/NvmBenchmarks/nvml/src/examples/libpmemobj/map/data_store.c
+* /home/aksun/git/NvmBenchmarks/nvml/src/examples/libpmemobj/hashmap/hashmap_atomic.c
+* /home/aksun/git/NvmBenchmarks/nvml/src/examples/libpmemobj/hashmap/hashmap_tx.c
+
+#### patterns
+##### log
+* add(node)
+* add(node, field)
+
 # pmfs
 
     cd ~/git/NvmBenchmarks/pmfs
