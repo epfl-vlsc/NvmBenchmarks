@@ -23,6 +23,36 @@
 
     clang -emit-llvm -ggdb -O0 -std=c99 -D_ENABLE_FTRACE -c -o obj/kp_kv_master.bc kp_kv_master.c -Ivector-cdds/ -Ihash_table/ -Ithreadpool/ -I../include  -D_GNU_SOURCE -Wall -fPIC -O0
 
+## description
+
+* key-value store that provides snapshot isolation, worker threads update data on DRAM, a master thread commits the changes to PM.
+* beware the code is not like this
+
+### flush
+
+	pmem_persist
+	pmem_flush_cache
+	pmemalloc_activate_helper
+	__pmem_persist
+
+	kp_flush_range: mfence + clflush + mfence
+
+* /home/aksun/git/NvmBenchmarks/echo/src/hash_table/hash.c
+* /home/aksun/git/NvmBenchmarks/echo/src/kp_kv_local.c
+* /home/aksun/git/NvmBenchmarks/echo/src/kp_kv_master.c
+* /home/aksun/git/NvmBenchmarks/echo/src/kp_kvstore.c
+* /home/aksun/git/NvmBenchmarks/echo/src/kp_recovery.h
+* /home/aksun/git/NvmBenchmarks/echo/src/vector-cdds/vector.c
+* /home/aksun/git/NvmBenchmarks/echo/src/vector-cdds/vector64.c
+
+#### patterns
+##### pair
+* obj, state: write(obj), flush(obj), write(state), flush(state)
+* don't do it for gc
+
+##### dur
+* obj->list/next, entry: flush(entry), w(obj->list, entry)
+
 # nstore
 
 ## first time
