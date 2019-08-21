@@ -14,8 +14,8 @@
 #
 # tests CMakeLists.txt
 
-add_subdirectory (region)
+#add_subdirectory (region)
 add_subdirectory (data_structures)
-add_subdirectory (consistency)
-add_subdirectory (pmalloc)
+#add_subdirectory (consistency)
+#add_subdirectory (pmalloc)
 

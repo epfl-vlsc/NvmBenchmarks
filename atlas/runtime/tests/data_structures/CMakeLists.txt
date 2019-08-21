@@ -13,12 +13,10 @@
 # <http://www.gnu.org/licenses/>.
 #
 # data_structures CMakeLists
-
 set (EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/tests/data_structures)
-
-set (DS_ATLAS_TGTS alarm_clock_nvm queue_nvm stores_nvm cow_array_list_nvm sll_nvm sll_mt_ll sll_ll)
+set (DS_ATLAS_TGTS alarm_clock_nvm queue_nvm stores_nvm cow_array_list_nvm)
 set (DS_NOATLAS_TGTS cow_array_list queue sll sll_mt stores alarm_clock)
-set (DS_ALL_TGTS ${DS_ATLAS_TGTS} ${DS_NOATLAS_TGTS})
+set (DS_ALL_TGTS ${DS_ATLAS_TGTS})
 
 foreach (t ${DS_ALL_TGTS})
     if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/${t}.c")
