@@ -3,6 +3,39 @@
     * check O
     * remove W flags
 
+# atlas
+
+## first time
+
+    fix compiler pass for clang 8
+	cd runtime
+	./compile.sh build > make.txt
+
+## make
+
+	cd runtime
+    ./compile.sh make > make.txt
+    ./compile.sh rem
+
+## compile
+
+    
+
+## description
+
+* takes an existing program with locks that uses Atlas libraries and converts it to a PM program with consistency using undo log. 
+
+### flush
+
+	
+
+#### patterns
+##### pair
+
+##### dur
+
+##### log
+
 # echo
 
 ## first time
