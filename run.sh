@@ -16,20 +16,39 @@ CONS_FLAGS="-load ${BASE_DIR}/lib/libcons.so -cons"
 INITOPT="-O1 -mllvm -disable-llvm-optzns"
 FINOPT="-O3"
 
-if [ "$MODE" == "atlas" ]; then
+if [ "$MODE" == "pairatlas" ]; then
     echo "not done"
 elif [ "$MODE" == "pairecho" ]; then
-    COMP_DIR=echo/src
+    COMP_DIR="echo/src"
     COMP_CMD="clang ${INITOPT} ${LLVM_FLAGS} -std=c99 -D_ENABLE_FTRACE -c -o 
     ${UNITS_DIR}/${BC_FILE} kp_kv_master.c -Ivector-cdds/ -Ihash_table/ -Ithreadpool/ -I../include  
     -D_GNU_SOURCE -Wall -fPIC"
-elif [ "$MODE" == "nstore" ]; then
+elif [ "$MODE" == "pairnstore" ]; then
+    COMP_DIR="nstore/src"
+    COMP_CMD="clang++ ${INITOPT} ${LLVM_FLAGS} -DHAVE_CONFIG_H -I. -I.. -I./common
+    -D_ENABLE_FTRACE -fsized-deallocation -std=c++11 
+    -c -o ${UNITS_DIR}/${BC_FILE} opt_wal_engine.cpp"
+elif [ "$MODE" == "pairnvml" ]; then
     echo "not done"
-elif [ "$MODE" == "nvml" ]; then
+elif [ "$MODE" == "pairpmfs" ]; then
     echo "not done"
-elif [ "$MODE" == "pmfs" ]; then
+elif [ "$MODE" == "pairpmgd" ]; then
     echo "not done"
-elif [ "$MODE" == "pmgd" ]; then
+elif [ "$MODE" == "duratlas" ]; then
+    echo "not done"
+elif [ "$MODE" == "durecho" ]; then
+    echo "not done"
+elif [ "$MODE" == "durnstore" ]; then
+    echo "not done"
+elif [ "$MODE" == "durnvml" ]; then
+    echo "not done"
+elif [ "$MODE" == "durpmfs" ]; then
+    echo "not done"
+elif [ "$MODE" == "durpmgd" ]; then
+    echo "not done"
+elif [ "$MODE" == "logatlas" ]; then
+    echo "not done"
+elif [ "$MODE" == "lognvml" ]; then
     echo "not done"
 elif [ "$MODE" == "rem" ]; then
     cd units
@@ -51,10 +70,15 @@ function contains() {
     return 1
 }
 
-modes=("pairecho" "d")
+modes=( \
+"pairatlas" "pairecho" "pairnstore" "pairnvml" "pairpmfs" "pairpmgd" \
+"duratlas" "durecho" "durnstore" "durnvml" "durpmfs" "durpmgd" \
+"logatlas" "lognvml" \
+)
+
 if [ $(contains "${modes[@]}" "$MODE") == "y" ] ;then
     cd ${COMP_DIR}
-    echo ${PWD}
+    echo "In ${PWD}"
 
     echo ${COMP_CMD}
     ${COMP_CMD}
@@ -64,4 +88,3 @@ if [ $(contains "${modes[@]}" "$MODE") == "y" ] ;then
 	clang++ ${FINOPT} ${LLVM_FLAGS} -o ${BC_FILE} -c ${BC_FILE}
     llvm-dis -o ${LL_FILE} ${BC_FILE}
 fi
-

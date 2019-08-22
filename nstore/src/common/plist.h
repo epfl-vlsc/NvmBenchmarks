@@ -3,6 +3,8 @@
 #include <vector>
 #include "libpm.h"
 
+#include "../../../annot.h"
+
 namespace storage {
 
 // Persistent list for storing pointers
@@ -17,7 +19,7 @@ class plist {
   struct node** head;
   struct node** tail;
   bool activate;
-  off_t _size = 0;
+  sentinel() off_t _size = 0;
 
   plist()
       : head(NULL),
@@ -66,7 +68,7 @@ class plist {
     return np;
   }
 
-  off_t push_back(V val) {
+  off_t nvm_fnc push_back(V val) {
     off_t index = -1;
 
     if ((*head) == NULL) {

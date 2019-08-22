@@ -102,7 +102,7 @@
     g++ -DHAVE_CONFIG_H -I. -I..  -I./common -Wno-pointer-arith -Wall -Wextra -ggdb -O3 -D_ENABLE_FTRACE -fsized-deallocation -std=c++11 -MT sp_engine.o -MD -MP -MF .deps/sp_engine.Tpo -c -o sp_engine.o sp_engine.cpp
 
     cd src
-    clang++ -DHAVE_CONFIG_H -I. -I.. -I./common -Wno-pointer-arith -Wall -Wextra -ggdb -O0 -D_ENABLE_FTRACE -fsized-deallocation -std=c++11 -MT sp_engine.o -MD -MP -c -o sp_engine.o sp_engine.cpp
+    clang++ -DHAVE_CONFIG_H -I. -I.. -I./common -ggdb -O0 -D_ENABLE_FTRACE fsized-deallocation -std=c++11 -MT sp_engine.o -MD -MP -c -o sp_engine.o sp_engine.cpp
 
     cd test
     clang++ -DHAVE_CONFIG_H -I. -I.. -I./../src/common -Wno-pointer-arith -Wall -Wextra -ggdb -O0 -D_ENABLE_FTRACE -fsized-deallocation -std=c++11 -MT test_plist.o -MD -MP -c -o test_plist.o test_plist.cpp
