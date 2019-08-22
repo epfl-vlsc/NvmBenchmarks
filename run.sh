@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 MODE=$1
 BASE_DIR=$PWD
 
@@ -19,14 +20,11 @@ if [ "$MODE" == "atlas" ]; then
     echo "not done"
 elif [ "$MODE" == "pairecho" ]; then
     COMP_DIR=echo/src
-    COMP_CMD=clang ${INITOPT} ${LLVM_FLAGS} -std=c99 -D_ENABLE_FTRACE \
-        -c -o ${UNITS_DIR}/${BC_FILE} kp_kv_master.c \
-        -Ivector-cdds/ -Ihash_table/ -Ithreadpool/ -I../include -D_GNU_SOURCE -Wall -fPIC
+    COMP_CMD="clang ${INITOPT} ${LLVM_FLAGS} -std=c99 -D_ENABLE_FTRACE -c -o 
+    ${UNITS_DIR}/${BC_FILE} kp_kv_master.c -Ivector-cdds/ -Ihash_table/ -Ithreadpool/ -I../include  
+    -D_GNU_SOURCE -Wall -fPIC"
 elif [ "$MODE" == "nstore" ]; then
-    cd nstore/src
-    clang++ -DHAVE_CONFIG_H -I. -I.. -I./common -Wno-pointer-arith \
-        -Wall -Wextra -ggdb -O0 -D_ENABLE_FTRACE -fsized-deallocation -std=c++11 \
-        -MT sp_engine.o -MD -MP -c -o sp_engine.o sp_engine.cpp
+    echo "not done"
 elif [ "$MODE" == "nvml" ]; then
     echo "not done"
 elif [ "$MODE" == "pmfs" ]; then
@@ -63,7 +61,7 @@ if [ $(contains "${modes[@]}" "$MODE") == "y" ] ;then
 
 	cd ${UNITS_DIR}
     opt ${CONS_FLAGS} -o ${BC_FILE} ${BC_FILE} > /dev/null 2>&1
-	clang++ ${FINOPT} ${LLVM_FLAGS} -o ${BC_FILE} ${BC_FILE}
+	clang++ ${FINOPT} ${LLVM_FLAGS} -o ${BC_FILE} -c ${BC_FILE}
     llvm-dis -o ${LL_FILE} ${BC_FILE}
 fi
 
