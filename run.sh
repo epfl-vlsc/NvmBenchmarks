@@ -28,10 +28,28 @@ elif [ "$MODE" == "pairnstore" ]; then
     COMP_CMD="clang++ ${INITOPT} ${LLVM_FLAGS} -DHAVE_CONFIG_H -I. -I.. -I./common
     -D_ENABLE_FTRACE -fsized-deallocation -std=c++11 
     -c -o ${UNITS_DIR}/${BC_FILE} opt_wal_engine.cpp"
-elif [ "$MODE" == "pairnvml" ]; then
-    echo "not done"
 elif [ "$MODE" == "pairpmfs" ]; then
-    echo "not done"
+    INCLUDES="-isystem /usr/lib/gcc/x86_64-linux-gnu/5/include 
+    -I./arch/x86/include -Iarch/x86/include/generated/uapi 
+    -Iarch/x86/include/generated  -Iinclude -I./arch/x86/include/uapi 
+    -Iarch/x86/include/generated/uapi -I./include/uapi 
+    -Iinclude/generated/uapi -include ./include/linux/kconfig.h"
+    FLAGS="-D__KERNEL__ -Wno-trigraphs -fno-strict-aliasing 
+    -fno-common -Wno-format-security -Wno-address-of-packed-member 
+    -std=gnu89 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -m64 
+    -mno-80387 -mtune=generic -mno-red-zone -mcmodel=kernel 
+    -funit-at-a-time -DCONFIG_X86_X32_ABI -DCONFIG_AS_FXSAVEQ=1 
+    -DCONFIG_AS_SSSE3=1 -DCONFIG_AS_CRC32=1 -DCONFIG_AS_AVX=1 
+    -DCONFIG_AS_AVX2=1 -pipe -Wno-sign-compare 
+    -fno-asynchronous-unwind-tables -fno-delete-null-pointer-checks -fstack-protector 
+    -fno-omit-frame-pointer -fno-optimize-sibling-calls -pg -mfentry 
+    -DCC_USING_FENTRY  -Wno-pointer-sign -fno-strict-overflow -DMODULE 
+    -D\"KBUILD_STR(s)=#s\" -D\"KBUILD_BASENAME=KBUILD_STR(journal)\" 
+    -D\"KBUILD_MODNAME=KBUILD_STR(pmfs)\""
+    
+    COMP_DIR="/usr/src/linux-headers-4.3.0-040300-generic"
+    COMP_CMD="clang ${INITOPT} ${LLVM_FLAGS} -nostdinc ${INCLUDES} ${FLAGS} -c 
+    -o ${UNITS_DIR}/${BC_FILE} /home/aksun/git/NvmBenchmarks/pmfs/journal.c"
 elif [ "$MODE" == "pairpmgd" ]; then
     echo "not done"
 elif [ "$MODE" == "duratlas" ]; then
@@ -81,7 +99,7 @@ if [ $(contains "${modes[@]}" "$MODE") == "y" ] ;then
     echo "In ${PWD}"
 
     echo ${COMP_CMD}
-    ${COMP_CMD}
+    eval ${COMP_CMD}
 
 	cd ${UNITS_DIR}
     opt ${CONS_FLAGS} -o ${BC_FILE} ${BC_FILE} > /dev/null 2>&1
