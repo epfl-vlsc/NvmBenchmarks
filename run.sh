@@ -51,7 +51,12 @@ elif [ "$MODE" == "pairpmfs" ]; then
     COMP_CMD="clang ${INITOPT} ${LLVM_FLAGS} -nostdinc ${INCLUDES} ${FLAGS} -c 
     -o ${UNITS_DIR}/${BC_FILE} /home/aksun/git/NvmBenchmarks/pmfs/journal.c"
 elif [ "$MODE" == "pairpmgd" ]; then
-    echo "not done"
+    COMP_DIR="pmgd"
+    COMP_CMD="clang++ ${INITOPT} ${LLVM_FLAGS} --std=c++11 -I./include 
+    -fomit-frame-pointer -funit-at-a-time -fno-strict-aliasing -fno-threadsafe-statics 
+    -fnon-call-exceptions -fPIC -Wall -Wpointer-arith -Wno-parentheses 
+    -Wno-conversion -Wno-sign-compare -DPM -DPMFLUSH=clflushopt 
+    -o ${UNITS_DIR}/${BC_FILE} -c src/transaction.cc"
 elif [ "$MODE" == "duratlas" ]; then
     echo "not done"
 elif [ "$MODE" == "durecho" ]; then

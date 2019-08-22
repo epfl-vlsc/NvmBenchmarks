@@ -42,6 +42,8 @@
 #include "RangeSet.h"
 #include "lock.h"
 
+#include "../../annot.h"
+
 namespace PMGD {
     class GraphImpl;
 
@@ -127,7 +129,7 @@ namespace PMGD {
             bool _committed;
 
             TransactionHandle _tx_handle;
-            JournalEntry *_jcur;
+            sentinel(TransactionImpl::JournalEntry) JournalEntry *_jcur;
 
             TransactionImpl *_outer_tx;
 

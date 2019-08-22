@@ -125,7 +125,7 @@ TransactionImpl::~TransactionImpl()
     _per_thread_tx = _outer_tx;
 }
 
-void TransactionImpl::log_je(void *src_ptr, size_t len)
+void nvm_fnc TransactionImpl::log_je(void *src_ptr, size_t len)
 {
     _jcur->len = uint8_t(len);
     _jcur->addr = src_ptr;
