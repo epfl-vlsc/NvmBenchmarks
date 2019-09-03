@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+MODE=$1
 if [ "$MODE" == "echo" ]; then
     cd echo/src
     ./compile.sh
@@ -17,4 +17,6 @@ elif [ "$MODE" == "pmgd" ]; then
     ./compile.sh
 elif [ "$MODE" == "atlas" ]; then
     echo "todo"
+else
+    echo "choose benchmark"
 fi
