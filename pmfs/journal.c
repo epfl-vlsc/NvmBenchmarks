@@ -646,7 +646,7 @@ static inline void pmfs_commit_logentry(struct super_block *sb,
 	}
 }
 
-int nvm_fnc pmfs_add_logentry(struct super_block *sb,
+int pmfs_add_logentry(struct super_block *sb,
 		pmfs_transaction_t *trans, void *addr, uint16_t size, u8 type)
 {
 	struct pmfs_sb_info *sbi = PMFS_SB(sb);
