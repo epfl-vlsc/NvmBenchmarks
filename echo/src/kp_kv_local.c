@@ -26,6 +26,7 @@
 #include <unistd.h>
 #include <pthread.h>
 
+#include "annot.h"
 /* Global variables: */
 uint32_t kp_local_id_count = 0;
 
@@ -46,7 +47,7 @@ struct kp_kv_local_struct {
 	   * locking for ->master shouldn't be necessary, as it shouldn't
 	   * ever change.
 	   */
-	ds_state state;
+	sentinel() ds_state state;
 };
 
 int kp_kv_local_create(kp_kv_master *master, kp_kv_local **local,
