@@ -28,7 +28,7 @@
 #include "../include/kp_kv_master.h"
 #include "../include/clibpm.h"
 
-
+#include "annot.h"
 void *pmemalloc_init(const char *path, size_t size);
 
 bool do_conflict_detection = true;
@@ -358,7 +358,7 @@ void print_timing(const char *prefix, kp_timers *timers, int divisor) {
 /* ==================================================== 
      GENERIC STORE FUNCTIONS: PARSE TO API
    ==================================================== */
-void *generic_store_create(int num_threads){
+void * generic_store_create(int num_threads){
   int rc = 0;
   kp_kv_master *master;
   void *store;
@@ -2277,7 +2277,7 @@ fail:
     usage(argv[0]);
   }
 }
-int main(int argc, char *argv[]){
+int nvm_fnc main(int argc, char *argv[]){
   int num_threads = 0;
   int rc = 0;
   int i;

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CHECKER_DIR="/home/aksun/git/NvmBenchmarks/lib"
+CHECKER_DIR="/home/aksun/git/NvmFlow/dfbuild/lib"
 CHECKER_FLAGS="-fno-discard-value-names -ggdb -femit-all-decls -fstandalone-debug"
 LLVM_FLAGS="-emit-llvm ${CHECKER_FLAGS}"
 CONS_FLAGS="-load ${CHECKER_DIR}/libcons.so -cons"

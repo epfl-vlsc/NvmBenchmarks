@@ -30,7 +30,7 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#include "../../annot.h"
+#include "annot.h"
 /* If LOCK_MASTER is defined, then the read-write lock on the master store
  * will be used - however, right now the lock is only taken for reading
  * anyway, so this just costs us a bit of time on every get from the master.
@@ -63,7 +63,7 @@ struct kp_kv_master_struct {
 	sentinel() ds_state state;
 };
 
-int nvm_fnc kp_kv_master_create(kp_kv_master **master, consistency_mode mode,
+int kp_kv_master_create(kp_kv_master **master, consistency_mode mode,
 		size_t expected_max_keys, bool do_conflict_detection, bool use_nvm)
 {
 	int ret;
