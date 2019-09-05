@@ -106,7 +106,7 @@ struct clump {
 };
 
 
-#define ABS_PTR(p) ((decltype(p))(pmp + (uintptr_t)p))
+#define ABS_PTR(p) ((decltype(p))((uintptr_t)pmp + (uintptr_t)p))
 #define REL_PTR(p) ((decltype(p))((uintptr_t)p - (uintptr_t)pmp))
 
 /* 64B cache line size */

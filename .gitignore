@@ -1,2 +1,4 @@
 syn.sh
 .vscode/settings.json
+benchmarks/*.bc
+benchmarks/*.ll

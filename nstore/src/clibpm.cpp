@@ -26,12 +26,12 @@ void operator delete(void *p, std::size_t sz) NOEXCEPT {
     else
     	free(p);
     return;
-    fprintf(stderr, "%p\n", p+sz);
+    fprintf(stderr, "%p\n", (char*)p+sz);
 }
 
 void operator delete[](void *p, std::size_t sz) NOEXCEPT {
 	assert(0);
-	fprintf(stderr, "%p\n", p+sz);
+	fprintf(stderr, "%p\n", (char*)p+sz);
 	return;
 }
 
@@ -432,8 +432,8 @@ void *pmemalloc_reserve(size_t size) {
 
     if (nsize <= sz) {
       if (state == PMEM_STATE_FREE) {
-        void *ptr = (void *) (uintptr_t) clp + PMEM_CHUNK_SIZE
-            - (uintptr_t) pmp;
+        void *ptr = (void *) ((uintptr_t) clp + PMEM_CHUNK_SIZE
+            - (uintptr_t) pmp);
         size_t leftover = sz - nsize;
 
         DEBUG("fit found ptr 0x%lx, leftover %lu bytes", ptr, leftover);
