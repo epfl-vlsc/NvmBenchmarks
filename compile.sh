@@ -15,8 +15,9 @@ elif [ "$MODE" == "pmfs" ]; then
 elif [ "$MODE" == "pmgd" ]; then
     cd pmgd
     ./compile.sh
-elif [ "$MODE" == "atlas" ]; then
-    echo "todo"
+elif [ "$MODE" == "splitfs" ]; then
+    cd splitfs
+    ./compile.sh
 else
     echo "choose benchmark"
 fi
