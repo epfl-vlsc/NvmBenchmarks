@@ -1,0 +1,27 @@
+# output binary
+BIN := pmgd
+
+# source files
+SRCS := \
+    GraphConfig.cc node.cc edge.cc stringid.cc StringTable.cc \
+    PropertyList.cc TransactionManager.cc transaction.cc Index.cc IndexManager.cc \
+    EdgeIndex.cc IndexString.cc FixedAllocator.cc \
+    VariableAllocator.cc FlexFixedAllocator.cc FixSizeAllocator.cc \
+    ChunkAllocator.cc AllocatorUnit.cc Allocator.cc linux.cc graph.cc \
+
+all: $(BIN)
+
+# C flags
+CFLAGS := 
+# C++ flags
+CXXFLAGS := -std=c++11 -fomit-frame-pointer -funit-at-a-time -fno-strict-aliasing \
+-fno-threadsafe-statics -fnon-call-exceptions -fPIC -Wno-parentheses -Wno-conversion \
+-Wno-sign-compare -Wno-c++11-narrowing -DPM -DPMFLUSH=clflushopt -DCOMMIT_ID=""
+# C/C++ flags
+CPPFLAGS := 
+# linker flags
+LDFLAGS := 
+# include flags
+INCFLAGS := -I../include
+
+include ../../Makefile.inc

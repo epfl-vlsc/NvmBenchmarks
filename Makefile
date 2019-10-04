@@ -24,7 +24,10 @@ bpmfs:
 	@echo pmfs
 
 bpmgd:
-	@echo pmgd
+	make -j8 -C pmgd/src -f Makefile.nvm -j8
+
+cpmgd:
+	make -j8 -C pmgd/src -f Makefile.nvm -j8 clean
 
 bsplitfs:
 	make -j8 -C splitfs -f Makefile.nvm -j8
