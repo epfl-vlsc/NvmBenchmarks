@@ -7,7 +7,10 @@ cecho:
 	make -j8 -C echo/src -f Makefile.nvm -j8 clean
 
 bnstore:
-	@echo nstore
+	make -j8 -C nstore/src -f Makefile.nvm -j8
+
+cnstore:
+	make -j8 -C nstore/src -f Makefile.nvm -j8 clean
 
 bnvml:
 	@echo nvml

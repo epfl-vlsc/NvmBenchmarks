@@ -1,0 +1,23 @@
+# output binary
+BIN := nstore
+
+# source files
+SRCS := \
+    libpm.cpp wal_engine.cpp sp_engine.cpp lsm_engine.cpp \
+    opt_wal_engine.cpp opt_lsm_engine.cpp opt_sp_engine.cpp \
+    test_benchmark.cpp ycsb_benchmark.cpp tpcc_benchmark.cpp main.cpp
+
+all: $(BIN)
+
+# C flags
+CFLAGS :=
+# C++ flags
+CXXFLAGS := -DHAVE_CONFIG_H -D_ENABLE_FTRACE -fsized-deallocation -Wno-literal-conversion -std=c++11
+# C/C++ flags
+CPPFLAGS := 
+# linker flags
+LDFLAGS := 
+# include flags
+INCFLAGS := -I. -I..  -I./common -I../..
+
+include ../../Makefile.inc
