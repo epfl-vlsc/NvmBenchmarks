@@ -1,5 +1,7 @@
 all: becho bnstore bnvml bpmfs bpmgd bsplitfs
 
+clean: cecho cnstore cnvml cpmfs cpmgd csplitfs
+
 becho:
 	make -j8 -C echo/src -f Makefile.nvm -j8
 
@@ -25,4 +27,7 @@ bpmgd:
 	@echo pmgd
 
 bsplitfs:
-	@echo splitfs
+	make -j8 -C splitfs -f Makefile.nvm -j8
+
+csplitfs:
+	make -j8 -C splitfs -f Makefile.nvm -j8 clean
