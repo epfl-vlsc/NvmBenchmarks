@@ -21,7 +21,10 @@ cnvml:
 	make -j8 -C nvml/src/examples/libpmemobj -f Makefile.nvm -j8 clean
 
 bpmfs:
-	@echo pmfs
+	make -j8 -C pmfs -f Makefile.nvm -j8
+
+cpmfs:
+	make -j8 -C pmfs -f Makefile.nvm -j8 clean
 
 bpmgd:
 	make -j8 -C pmgd/src -f Makefile.nvm -j8
