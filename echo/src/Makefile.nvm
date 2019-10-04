@@ -1,4 +1,26 @@
-include ../../Makefile.inc
 
-all:
-	@echo $(abc)
+
+# output binary
+BIN := echo
+
+# source files
+SRCS := \
+    kp_kvstore.c kp_kv_local.c kp_kv_master.c kp_common.c \
+	vector-cdds/vector.c vector-cdds/vector64.c hash_table/hash.c \
+    threadpool/queue.c threadpool/threadpool.c kp_recovery.c  \
+    evaluation/evaluation.c clibpm.c
+
+all: $(BIN)
+
+# C flags
+CFLAGS := -D_GNU_SOURCE -fPIC -std=c99 -D_ENABLE_FTRACE
+# C++ flags
+CXXFLAGS := 
+# C/C++ flags
+CPPFLAGS := 
+# linker flags
+LDFLAGS := 
+# include flags
+INCFLAGS := -Ivector-cdds/ -Ihash_table/ -Ithreadpool/ -I../include -I../..
+
+include ../../Makefile.inc
