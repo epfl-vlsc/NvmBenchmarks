@@ -43,7 +43,7 @@ LINK.bc = $(LD) $(LDLIBS) -o $@
 # postcompile step
 POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
 # postlink step
-POSTLINK = cp $@ $@.ll $(BENCHDIR)
+POSTLINK = cp $@ $@.bc; cp $@.bc $@.ll $(BENCHDIR)
 # constant propagate bitcode files
 CONS = $(PASS) $(CONSFLAGS) -o $@ $@
 # dead code eliminate bitcode files
