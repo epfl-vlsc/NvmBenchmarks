@@ -34,8 +34,8 @@
  * map_hashmap_tx.c -- common interface for maps
  */
 
-#include <map.h>
-#include <hashmap_tx.h>
+#include "map.h"
+#include "hashmap_tx.h"
 
 /*
  * map_hm_tx_check -- wrapper for hm_tx_check

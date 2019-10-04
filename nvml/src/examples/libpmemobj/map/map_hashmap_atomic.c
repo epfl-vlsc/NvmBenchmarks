@@ -34,8 +34,8 @@
  * map_hashmap_atomic.c -- common interface for maps
  */
 
-#include <map.h>
-#include <hashmap_atomic.h>
+#include "map.h"
+#include "hashmap_atomic.h"
 
 /*
  * map_hm_atomic_check -- wrapper for hm_atomic_check

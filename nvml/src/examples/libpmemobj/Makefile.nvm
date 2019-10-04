@@ -1,0 +1,25 @@
+# output binary
+BIN := nvml
+
+# source files
+SRCS := \
+    hashmap/hashmap_atomic.c hashmap/hashmap_tx.c \
+    tree_map/ctree_map.c tree_map/btree_map.c tree_map/rbtree_map.c \
+    map/map_ctree.c map/map_btree.c map/map_rbtree.c \
+    map/map_hashmap_atomic.c map/map_hashmap_tx.c \
+    map/data_store.c
+
+all: $(BIN)
+
+# C flags
+CFLAGS := -std=gnu99 -fPIC
+# C++ flags
+CXXFLAGS := 
+# C/C++ flags
+CPPFLAGS := 
+# linker flags
+LDFLAGS := 
+# include flags
+INCFLAGS := -I../../include -I. -Itree_map -Ihashmap -I../../../..
+
+include ../../../../Makefile.inc

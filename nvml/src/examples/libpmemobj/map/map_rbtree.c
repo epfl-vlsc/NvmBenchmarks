@@ -34,8 +34,8 @@
  * map_rbtree.c -- common interface for maps
  */
 
-#include <map.h>
-#include <rbtree_map.h>
+#include "map.h"
+#include "rbtree_map.h"
 
 /*
  * map_rbtree_check -- wrapper for rbtree_map_check

@@ -34,8 +34,8 @@
  * map_btree.c -- common interface for maps
  */
 
-#include <map.h>
-#include <btree_map.h>
+#include "map.h"
+#include "btree_map.h"
 
 /*
  * map_btree_check -- wrapper for btree_map_check

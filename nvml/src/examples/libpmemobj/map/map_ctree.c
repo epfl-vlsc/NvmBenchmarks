@@ -34,8 +34,8 @@
  * map_ctree.c -- common interface for maps
  */
 
-#include <map.h>
-#include <ctree_map.h>
+#include "map.h"
+#include "ctree_map.h"
 
 /*
  * map_ctree_check -- wrapper for ctree_map_check

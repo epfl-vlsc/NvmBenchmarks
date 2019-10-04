@@ -13,7 +13,10 @@ cnstore:
 	make -j8 -C nstore/src -f Makefile.nvm -j8 clean
 
 bnvml:
-	@echo nvml
+	make -j8 -C nvml/src/examples/libpmemobj -f Makefile.nvm -j8
+
+cnvml:
+	make -j8 -C nvml/src/examples/libpmemobj -f Makefile.nvm -j8 clean
 
 bpmfs:
 	@echo pmfs
