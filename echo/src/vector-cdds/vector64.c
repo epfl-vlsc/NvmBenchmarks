@@ -13,6 +13,8 @@
 #include "../kp_macros.h"
   //hacky...
 
+#include "annot.h"
+
 /* Factors that define when and how the vector is resized. The initial
  * size must be an integer, but the resize factor may be non-integral
  * (although I've only tested integer factors, namely 2.0).
@@ -39,7 +41,7 @@ struct vector64_ {
 	unsigned long size;   //number of array elements allocated
 	unsigned long count;  //number of elements in use
 	bool use_nvm;
-	ds_state state;
+	sentinel() ds_state state;
 };
 
 int vector64_create(vector64 **v, unsigned long size, bool use_nvm)

@@ -13,6 +13,8 @@
 #include "../kp_macros.h"
   //hacky...
 
+#include "annot.h"
+
 #define VECTOR_INIT_SIZE 8
 #define VECTOR_RESIZE_FACTOR 2
 #define VECTOR_MAX_COUNT ((unsigned long long)(0-2))
@@ -36,7 +38,7 @@ struct vector_ {
 	unsigned long long size;   //number of array elements allocated
 	unsigned long long count;  //number of elements in use
 	bool use_nvm;
-	ds_state state;
+	sentinel() ds_state state;
 };
 
 int vector_create(vector **v, unsigned long long size, bool use_nvm)

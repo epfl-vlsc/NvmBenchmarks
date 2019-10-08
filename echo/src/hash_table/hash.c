@@ -35,6 +35,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "annot.h"
+
 #if USE_OBSTACK
 # include "obstack.h"
 # ifndef obstack_chunk_alloc
@@ -97,7 +99,7 @@ struct hash_table
 	struct obstack entry_stack;
 #endif
 	bool use_nvm;
-	ds_state state;
+	sentinel() ds_state state;
 };
 
 /* A hash table contains many internal entries, each holding a pointer to

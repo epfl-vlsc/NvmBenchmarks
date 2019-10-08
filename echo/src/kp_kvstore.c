@@ -44,6 +44,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "annot.h"
+
 #define INITIAL_GLOBAL_SNAPSHOT 444
   // arbitrary
 #define GC_VECTOR_SIZE ((unsigned long)16)
@@ -76,7 +78,7 @@ struct kp_kvstore_struct {
 									 //never written to!!
 	vector *commit_log;
 	pthread_mutex_t *snapshot_lock;  //lock for the snapshot number
-	ds_state state;
+	sentinel() ds_state state;
 };
 
 /* Global variables: */
@@ -101,7 +103,7 @@ typedef struct kp_vte_ {
 	uint64_t ttl;       //number of snapshots that reference this version
 	uint64_t snapshot;     //LOCAL only: working snapshot when inserted!
 	kp_commit_record *cr;  //MASTER only: pointer to commit record!
-	ds_state state;
+	sentinel() ds_state state;
 } kp_vte;
 
 /* Version tables: right now, the version table keeps track of what
@@ -125,7 +127,7 @@ struct kp_vt_struct {
 	 */
 	vector *vtes;    //vector of version table entries
 	pthread_mutex_t *lock;  //lock for this version table
-	ds_state state;
+	sentinel() ds_state state;
 };
 
 /* Commit records serve several purposes: ...
@@ -145,7 +147,7 @@ struct kp_commit_record_struct {
 	pthread_cond_t *state_cond;
 	const char *conflict_key;  //if we don't make a copy, then isn't this dangerous?
 	kp_commit_record *next_cr;  //see kp_append_to_commit_log()
-	commit_state state;
+	sentinel() commit_state state;
 	bool debug_signalled;
 };
 
@@ -158,7 +160,7 @@ struct kp_kvpair_struct {
 	const char *key;
 	const void *value;
 	size_t size;
-	ds_state state;
+	sentinel() ds_state state;
 };
 
 /* Stores info used for garbage collection. Only one garbage collector
@@ -195,7 +197,7 @@ struct kp_gc_struct {
 	vector64 *cps_to_collect;    //checkpoints that will be collected in next GC run
 	vector64 *cps_collected;     //checkpoints that we've collected
 	pthread_mutex_t *lock;       //disallow concurrent GC
-	ds_state state;
+	sentinel() ds_state state;
 };
 
 typedef struct stat_accumulator stat_accumulator_t;
@@ -1497,7 +1499,7 @@ commit_state kp_commit_state_transition(kp_commit_record *cr,
  * Returns: 0 on success, -1 on error. On success, *gc is set to point
  * to the new gc struct.
  */
-int kp_gc_create(kp_gc **gc, bool use_nvm)
+int nvm_fnc kp_gc_create(kp_gc **gc, bool use_nvm)
 {
 	int ret;
 	bool use_nvm_gc;
@@ -4963,9 +4965,9 @@ int kp_kvstore_create(kp_kvstore **kv, bool is_master,
 
 	/* CDDS: flush, set state, and flush again. Flushes will be skipped if
 	 * FLUSH_IT is not defined. */
-	kp_flush_range((void *)*kv, sizeof(kp_kvstore) - sizeof(ds_state), (*kv)->use_nvm);
+	kp_flush_range(*kv, sizeof(kp_kvstore) - sizeof(ds_state), (*kv)->use_nvm);
 	PM_EQU(((*kv)->state), (STATE_ACTIVE)); // persist
-	kp_flush_range((void *)&((*kv)->state), sizeof(ds_state), (*kv)->use_nvm);
+	kp_flush_range(&((*kv)->state), sizeof(ds_state), (*kv)->use_nvm);
 
 	return 0;
 }

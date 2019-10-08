@@ -199,11 +199,9 @@ unsigned int flush_range(const void *addr, const size_t size);
  * FLUSH_IT definition.
  * Definition:
  *   void kp_flush_range(void *addr, size_t size, bool use_nvm); */
-#define kp_flush_range(addr, size, use_nvm) do {  \
-	if (use_nvm) {                                \
-		flush_range(addr, size);                  \
-	}                                             \
-} while (0)
+#define kp_flush_range(addr, size, use_nvm)  \
+		flush_range(addr, size);                  
+
 
 /* Just a convenience wrapper for a single memory fence: */
 #define kp_mfence() do {  			\
