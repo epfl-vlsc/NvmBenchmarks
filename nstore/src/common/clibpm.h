@@ -157,8 +157,10 @@ static inline void __pmem_persist(void *addr, size_t len, int flags) {
 			/*PM_FLUSHOPT(((void*)uptr), ALIGN, ALIGN);*/		\
   		}								\
 	})
-#define pmem_persist(addr, len, flags)						\
-	({/*									\
+#define pmem_persist(addr, len, flags) __pmem_persist(addr, len, flags)
+
+/*					\
+	({									\
     		if (!(LIBPM <= (unsigned long long) addr &&			\
 			(unsigned long long) addr <= LIBPM + PMSIZE)) 		\
 		{								\
@@ -180,11 +182,11 @@ static inline void __pmem_persist(void *addr, size_t len, int flags) {
 						((void*)LIBPM+PMSIZE));		\
     			assert (LIBPM <= (unsigned long long) (addr+len) &&	\
 			(unsigned long long) (addr+len) <= LIBPM + PMSIZE);	\
-		} */								\
+		} 								\
   		pmem_flush_cache(addr, len, flags);				\
 		PM_FENCE();							\
 	})
-		
+*/
 
 #define pmemalloc_activate_helper(abs_ptr) 					\
 	({									\

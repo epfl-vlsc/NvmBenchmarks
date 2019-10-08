@@ -3,7 +3,7 @@
 #include <vector>
 #include "libpm.h"
 
-#include "../../../annot.h"
+#include "annot.h"
 
 namespace storage {
 
@@ -68,7 +68,7 @@ class plist {
     return np;
   }
 
-  off_t nvm_fnc push_back(V val) {
+  off_t push_back(V val) {
     off_t index = -1;
 
     if ((*head) == NULL) {

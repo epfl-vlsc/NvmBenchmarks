@@ -1,6 +1,7 @@
 // OPT WRITE-AHEAD LOGGING
 
 #include "opt_wal_engine.h"
+#include "annot.h"
 
 namespace storage {
 
@@ -41,7 +42,7 @@ std::string opt_wal_engine::select(const statement& st) {
   return val;
 }
 
-int opt_wal_engine::insert(const statement& st) {
+int nvm_fnc opt_wal_engine::insert(const statement& st) {
   //LOG_INFO("Insert");
   record* after_rec = st.rec_ptr;
   table* tab = db->tables->at(st.table_id);
