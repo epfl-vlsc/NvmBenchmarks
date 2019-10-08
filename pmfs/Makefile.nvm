@@ -33,6 +33,7 @@ INCFLAGS := -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/5/include \
 -I$(LINUXDIR)/arch/x86/include/generated -I$(LINUXDIR)/include \
 -I$(LINUXDIR)/arch/x86/include/uapi -I$(LINUXDIR)/arch/x86/include/generated/uapi \
 -I$(LINUXDIR)/include/uapi -I$(LINUXDIR)/include/generated/uapi \
+-I./.. \
 -include $(LINUXDIR)/include/linux/kconfig.h
 
 include ../Makefile.inc
