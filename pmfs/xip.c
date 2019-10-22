@@ -19,6 +19,8 @@
 #include "pmfs.h"
 #include "xip.h"
 
+#include "annot.h"
+
 static ssize_t
 do_xip_mapping_read(struct address_space *mapping,
 		    struct file_ra_state *_ra,
@@ -179,7 +181,7 @@ static inline size_t memcpy_to_nvmm(char *kmem, loff_t offset,
 	return copied;
 }
 
-static ssize_t
+static ssize_t nvm_fnc
 __pmfs_xip_file_write(struct address_space *mapping, const char __user *buf,
           size_t count, loff_t pos, loff_t *ppos)
 {
@@ -213,6 +215,7 @@ __pmfs_xip_file_write(struct address_space *mapping, const char __user *buf,
 		PMFS_START_TIMING(memcpy_w_t, memcpy_time);
 		pmfs_xip_mem_protect(sb, xmem + offset, bytes, 1);
 		copied = memcpy_to_nvmm((char *)xmem, offset, buf, bytes);
+		pmfs_flush_buffer(xmem + offset, copied, 0);
 		pmfs_xip_mem_protect(sb, xmem + offset, bytes, 0);
 		PMFS_END_TIMING(memcpy_w_t, memcpy_time);
 
