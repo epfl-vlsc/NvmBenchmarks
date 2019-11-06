@@ -299,7 +299,7 @@ hm_atomic_insert(PMEMobjpool *pop, TOID(struct hashmap_atomic) hashmap,
  * - 0 if value didn't exist,
  * - -1 if something bad happened
  */
-PMEMoid
+PMEMoid nvm_fnc
 hm_atomic_remove(PMEMobjpool *pop, TOID(struct hashmap_atomic) hashmap,
 		uint64_t key)
 {

@@ -287,7 +287,7 @@ btree_map_is_empty(PMEMobjpool *pop, TOID(struct btree_map) map)
 /*
  * btree_map_insert -- inserts a new key-value pair into the map
  */
-int nvm_fnc
+int tx_fnc
 btree_map_insert(PMEMobjpool *pop, TOID(struct btree_map) map,
 	uint64_t key, PMEMoid value)
 {
@@ -524,7 +524,7 @@ btree_map_remove_item(TOID(struct btree_map) map,
 /*
  * btree_map_remove -- removes key-value pair from the map
  */
-PMEMoid
+PMEMoid tx_fnc
 btree_map_remove(PMEMobjpool *pop, TOID(struct btree_map) map, uint64_t key)
 {
 	PMEMoid ret = OID_NULL;

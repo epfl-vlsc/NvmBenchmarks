@@ -40,6 +40,9 @@
 
 #include "ctree_map.h"
 
+#include "annot.h"
+#include "annot_nvml.h"
+
 #define BIT_IS_SET(n, i) (!!((n) & (1ULL << (i))))
 
 TOID_DECLARE(struct tree_map_node, CTREE_MAP_TYPE_OFFSET + 1);
@@ -198,7 +201,7 @@ ctree_map_insert_new(PMEMobjpool *pop, TOID(struct ctree_map) map,
 /*
  * ctree_map_insert -- inserts a new key-value pair into the map
  */
-int
+int tx_fnc
 ctree_map_insert(PMEMobjpool *pop, TOID(struct ctree_map) map,
 	uint64_t key, PMEMoid value)
 {
@@ -282,7 +285,7 @@ ctree_map_remove_free(PMEMobjpool *pop, TOID(struct ctree_map) map,
 /*
  * ctree_map_remove -- removes key-value pair from the map
  */
-PMEMoid
+PMEMoid tx_fnc
 ctree_map_remove(PMEMobjpool *pop, TOID(struct ctree_map) map, uint64_t key)
 {
 	struct tree_map_entry *parent = NULL;

@@ -38,6 +38,9 @@
 #include <errno.h>
 #include "rbtree_map.h"
 
+#include "annot.h"
+#include "annot_nvml.h"
+
 TOID_DECLARE(struct tree_map_node, RBTREE_MAP_TYPE_OFFSET + 1);
 
 #define NODE_P(_n)\
@@ -265,7 +268,7 @@ rbtree_map_recolor(TOID(struct rbtree_map) map,
 /*
  * rbtree_map_insert -- inserts a new key-value pair into the map
  */
-int
+int tx_fnc
 rbtree_map_insert(PMEMobjpool *pop, TOID(struct rbtree_map) map,
 	uint64_t key, PMEMoid value)
 {
@@ -387,7 +390,7 @@ rbtree_map_repair(TOID(struct rbtree_map) map, TOID(struct tree_map_node) n)
 /*
  * rbtree_map_remove -- removes key-value pair from the map
  */
-PMEMoid
+PMEMoid tx_fnc
 rbtree_map_remove(PMEMobjpool *pop, TOID(struct rbtree_map) map, uint64_t key)
 {
 	PMEMoid ret = OID_NULL;
