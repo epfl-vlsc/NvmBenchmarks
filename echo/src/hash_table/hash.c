@@ -59,8 +59,8 @@ struct hash_table
 	/* The array of buckets starts at BUCKET and extends to BUCKET_LIMIT-1,
 	   for a possibility of N_BUCKETS.  Among those, N_BUCKETS_USED buckets
 	   are not empty, there are N_ENTRIES active entries in the table.  */
-	struct hash_entry *bucket;
-	struct hash_entry const *bucket_limit;
+	dur_field struct hash_entry *bucket;
+	dur_field struct hash_entry const *bucket_limit;
 	size_t n_buckets;
 	size_t n_buckets_used;
 	size_t n_entries;
