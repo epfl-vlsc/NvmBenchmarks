@@ -614,7 +614,7 @@ journal_full:
 	return ERR_PTR(-EAGAIN);
 }
 
-static inline void nvm_fnc pmfs_commit_logentry(struct super_block *sb,
+static inline void pmfs_commit_logentry(struct super_block *sb,
 		pmfs_transaction_t *trans, pmfs_logentry_t *le)
 {
 	struct pmfs_sb_info *sbi = PMFS_SB(sb);

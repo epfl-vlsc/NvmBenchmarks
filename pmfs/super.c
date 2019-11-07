@@ -35,6 +35,8 @@
 #include <linux/types.h>
 #include "pmfs.h"
 
+#include "annot.h"
+
 int measure_timing = 0;
 int support_clwb = 0;
 int support_clflushopt = 0;

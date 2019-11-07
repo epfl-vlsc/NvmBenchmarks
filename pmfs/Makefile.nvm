@@ -3,8 +3,9 @@ BIN := pmfs
 
 # source files
 SRCS := \
+    journal.c xip.c \
     bbuild.c balloc.c dir.c file.c inode.c namei.c symlink.c super.c \
-    ioctl.c pmfs_stats.c journal.c xip.c wprotect.c
+    ioctl.c pmfs_stats.c wprotect.c \
 
 all: $(BIN)
 

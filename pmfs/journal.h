@@ -19,7 +19,7 @@
 #define __PMFS_JOURNAL_H__
 #include <linux/slab.h>
 
-//#include "../annot.h"
+#include "annot.h"
 
 /* default pmfs journal size 4MB */
 #define PMFS_DEFAULT_JOURNAL_SIZE  (4 << 20)
@@ -78,7 +78,7 @@ typedef struct pmfs_transaction {
 	u16              gen_id;
 	u16              status;
 	pmfs_journal_t  *t_journal;
-	pmfs_logentry_t *start_addr;
+	sentinel() pmfs_logentry_t *start_addr;
 	struct pmfs_transaction *parent;
 } pmfs_transaction_t;
 

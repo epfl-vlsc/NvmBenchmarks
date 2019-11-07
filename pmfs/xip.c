@@ -181,7 +181,7 @@ static inline size_t memcpy_to_nvmm(char *kmem, loff_t offset,
 	return copied;
 }
 
-static ssize_t nvm_fnc
+static ssize_t
 __pmfs_xip_file_write(struct address_space *mapping, const char __user *buf,
           size_t count, loff_t pos, loff_t *ppos)
 {
@@ -270,6 +270,7 @@ static ssize_t pmfs_file_write_fast(struct super_block *sb, struct inode *inode,
 	PMFS_START_TIMING(memcpy_w_t, memcpy_time);
 	pmfs_xip_mem_protect(sb, xmem + offset, count, 1);
 	copied = memcpy_to_nvmm((char *)xmem, offset, buf, count);
+	pmfs_flush_buffer(xmem + offset, copied, 0);
 	pmfs_xip_mem_protect(sb, xmem + offset, count, 0);
 	PMFS_END_TIMING(memcpy_w_t, memcpy_time);
 
@@ -340,7 +341,7 @@ static inline void pmfs_clear_edge_blk (struct super_block *sb, struct
 	}
 }
 
-ssize_t pmfs_xip_file_write(struct file *filp, const char __user *buf,
+ssize_t nvm_fnc pmfs_xip_file_write(struct file *filp, const char __user *buf,
           size_t len, loff_t *ppos)
 {
 	struct address_space *mapping = filp->f_mapping;
