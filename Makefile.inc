@@ -33,6 +33,8 @@ CHECKERFLAGS = -emit-llvm -fno-discard-value-names -ggdb -femit-all-decls -fstan
 CONSFLAGS = -load $(CHECKERDIR)/libcons.so -cons
 #flags for dead code elimination opt
 ADCEFLAGS = -load $(CHECKERDIR)/libsimp.so -simp
+#flags for alias analysis
+ALLOCFLAGS = -load $(CHECKERDIR)/liballoc.so -alloc
 
 # compile C source files
 COMPILE.c = $(CC) $(CHECKERFLAGS) $(DEPFLAGS) $(INCFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@
@@ -48,6 +50,8 @@ POSTLINK = cp $@ $@.bc; cp $@.bc $@.ll $(BENCHDIR)
 CONS = $(PASS) $(CONSFLAGS) -o $@ $@
 # dead code eliminate bitcode files
 ACDE = $(PASS) -mem2reg $(ADCEFLAGS) -o $@ $@
+#improve alias analysis for pmalloc
+ALLOC = $(PASS) $(ALLOCFLAGS) -o $@ $@
 #dissassemble bitcode to llvm ir
 DIS = llvm-dis $@
 
@@ -68,13 +72,15 @@ $(OBJDIR)/%.bc: %.c
 $(OBJDIR)/%.bc: %.c $(DEPDIR)/%.d
 	$(COMPILE.c) $<
 	$(POSTCOMPILE)
+	$(ALLOC)
 	$(CONS)
 	$(ACDE)
-
+	
 $(OBJDIR)/%.bc: %.cpp
 $(OBJDIR)/%.bc: %.cpp $(DEPDIR)/%.d
 	$(COMPILE.cc) $<
 	$(POSTCOMPILE)
+	$(ALLOC)
 	$(CONS)
 	$(ACDE)
 
@@ -82,6 +88,7 @@ $(OBJDIR)/%.bc: %.cc
 $(OBJDIR)/%.bc: %.cc $(DEPDIR)/%.d
 	$(COMPILE.cc) $<
 	$(POSTCOMPILE)
+	$(ALLOC)
 	$(CONS)
 	$(ACDE)
 
