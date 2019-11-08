@@ -45,7 +45,7 @@ struct kp_kv_master_struct {
 	/* Note: we don't store a "use_nvm" flag in the master struct; we just
 	 * have the one inside of the master's kvstore. */
 	uint32_t id;
-	kp_kvstore *kv;
+	dur_field kp_kvstore *kv;
 	consistency_mode mode;
 	/* Do we ever need to lock this struct? The id, kv and mode should all
 	 * be immutable once the master has been created, so I don't think so.

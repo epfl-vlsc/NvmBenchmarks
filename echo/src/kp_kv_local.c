@@ -34,11 +34,11 @@ uint32_t kp_local_id_count = 0;
 struct kp_kv_local_struct {
 	uint32_t id;                //not guaranteed to be unique _across failures_
 	uint64_t snapshot;          //snapshot number that this store is working off of
-	kp_kvstore *kv;             //each local index is just its own kp_kvstore, for now
-	kp_kv_master *master;       //master store for this local store
-	kp_ht_entry *lookup_entry;  //pre-allocated entry used for hash table lookup
-	kp_iterator *iter;          //pre-allocated iterator (for merges)
-	kp_iter_item *item;         //pre-allocated iterator item (for merges)
+	dur_field kp_kvstore *kv;             //each local index is just its own kp_kvstore, for now
+	dur_field kp_kv_master *master;       //master store for this local store
+	dur_field kp_ht_entry *lookup_entry;  //pre-allocated entry used for hash table lookup
+	dur_field kp_iterator *iter;          //pre-allocated iterator (for merges)
+	dur_field kp_iter_item *item;         //pre-allocated iterator item (for merges)
 	consistency_mode mode;      //copy of master's consistency_mode
 	size_t expected_max_keys;   //used to optimize creation of resizeable vectors
 	pthread_rwlock_t *rwlock;   //lock for this entire struct (not for the kp_kvstore)

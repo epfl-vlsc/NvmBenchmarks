@@ -68,7 +68,7 @@ struct kp_kvstore_struct {
 	int id;
 	uint64_t pairs_count;      //NOTE: check that this is reliable before using...
 	kp_gc *gc;                 //holds garbage collection info
-	Hash_table *ht;            //hashes (string) keys to version tables
+	dur_field Hash_table *ht;            //hashes (string) keys to version tables
 	pthread_rwlock_t *rwlock;  //kv store-wide lock
 	bool is_master;            //is this the master store?
 	bool use_nvm;              //is this kvstore stored in non-volatile memory?
@@ -97,12 +97,12 @@ typedef struct kp_vte_ {
 	 * the snapshot when the local worker performed the merge into the
 	 * master ("commit timestamp").
 	 */
-	const void *value;        //pointer to the actual data
+	dur_field const void *value;        //pointer to the actual data
 	size_t size;        //size of the value
 	uint64_t lvn;       //local version number
 	uint64_t ttl;       //number of snapshots that reference this version
 	uint64_t snapshot;     //LOCAL only: working snapshot when inserted!
-	kp_commit_record *cr;  //MASTER only: pointer to commit record!
+	dur_field kp_commit_record *cr;  //MASTER only: pointer to commit record!
 	sentinel() ds_state state;
 } kp_vte;
 
@@ -113,8 +113,8 @@ typedef struct kp_vte_ {
  * LVNs start from 0, so the most-recent LVN is ver_count-1!
  */
 struct kp_vt_struct {
-	kp_kvstore *parent;    //back-pointer to parent kvstore
-	const char *key;       //key that identifies this version table
+	dur_field kp_kvstore *parent;    //back-pointer to parent kvstore
+	dur_field const char *key;       //key that identifies this version table
 	uint64_t ver_count;    //total number of versions ever added
 	uint64_t len;          //number of entries stored in version table
 	/* EXPLANATION: ver_count is the total number of versions that have ever
@@ -125,7 +125,7 @@ struct kp_vt_struct {
 	 * every time a version is collected. To get the "current"/latest version
 	 * of a value, index into the vectors using vt->len - 1.
 	 */
-	vector *vtes;    //vector of version table entries
+	dur_field vector *vtes;    //vector of version table entries
 	pthread_mutex_t *lock;  //lock for this version table
 	sentinel() ds_state state;
 };
@@ -137,7 +137,7 @@ struct kp_commit_record_struct {
 	bool use_nvm;
 	uint64_t begin_snapshot;  //written into record by local worker
 	uint64_t end_snapshot;    //written into record by master
-	vector *kvpairs;
+	dur_field vector *kvpairs;
 	/* The state_lock should be held whenever the state variable is changed.
 	 * The state_lock is associated with the state_condition variable; 
 	 * readers should lock the state_lock, check the state, and then wait
@@ -157,8 +157,8 @@ struct kp_kvpair_struct {
 	 * commit record, which does have use_nvm.
 	 * But actually, just makes it simpler to store it in here anyway. */
 	bool use_nvm;
-	const char *key;
-	const void *value;
+	dur_field const char *key;
+	dur_field const void *value;
 	size_t size;
 	sentinel() ds_state state;
 };
@@ -191,11 +191,11 @@ struct kp_kvpair_struct {
 struct kp_gc_struct {
 	bool use_nvm;
 	uint64_t last_gc_snapshot;   //snapshot from when we last ran GC
-	vector64 *snapshots_in_use;  //snapshots in use by a local worker
-	vector64 *cps_to_keep;       //checkpoints in use or marked as keep-forever
-	vector64 *cps_collectable;   //checkpoints marked collectable (by telescoping), but still in-use!
-	vector64 *cps_to_collect;    //checkpoints that will be collected in next GC run
-	vector64 *cps_collected;     //checkpoints that we've collected
+	dur_field vector64 *snapshots_in_use;  //snapshots in use by a local worker
+	dur_field vector64 *cps_to_keep;       //checkpoints in use or marked as keep-forever
+	dur_field vector64 *cps_collectable;   //checkpoints marked collectable (by telescoping), but still in-use!
+	dur_field vector64 *cps_to_collect;    //checkpoints that will be collected in next GC run
+	dur_field vector64 *cps_collected;     //checkpoints that we've collected
 	pthread_mutex_t *lock;       //disallow concurrent GC
 	sentinel() ds_state state;
 };
@@ -1499,7 +1499,7 @@ commit_state kp_commit_state_transition(kp_commit_record *cr,
  * Returns: 0 on success, -1 on error. On success, *gc is set to point
  * to the new gc struct.
  */
-int nvm_fnc kp_gc_create(kp_gc **gc, bool use_nvm)
+int kp_gc_create(kp_gc **gc, bool use_nvm)
 {
 	int ret;
 	bool use_nvm_gc;
@@ -1703,9 +1703,9 @@ int kp_vte_create(kp_vte **vte, const void *value, uint64_t size, uint64_t lvn,
 
 	/* "CDDS": flush, set state, and flush again. The flushes will only actually
 	 * occur if use_nvm is true. */
-	kp_flush_range((void *)vte, sizeof(kp_vte) - sizeof(ds_state), use_nvm);
+	kp_flush_range(vte, sizeof(kp_vte) - sizeof(ds_state), use_nvm);
 	PM_EQU(((*vte)->state), (STATE_ACTIVE));
-	kp_flush_range((void *)&((*vte)->state), sizeof(ds_state), use_nvm);
+	kp_flush_range(&((*vte)->state), sizeof(ds_state), use_nvm);
 
 	kp_debug("finished allocating new kp_vte: value=%p, size=%zu, "
 			"lvn=%ju, ttl=%ju, snapshot=%ju, cr=%p\n", (*vte)->value,
